@@ -16,7 +16,7 @@ int main ()
     zmq::socket_t socket (context, ZMQ_REQ);
 
     std::cout << "Connecting to Echo server..." << std::endl;
-    socket.connect ("tcp://localhost:5555");
+    socket.connect("tcp://localhost:5555");
 
     // Keep track of the number of requests
 	int Count = 0;
