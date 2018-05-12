@@ -11,18 +11,18 @@ int main ()
 {
 	const unsigned int BUFFER_SIZE = 80;
 
-    // Prepare our context and socket
-    zmq::context_t context (1);
-    zmq::socket_t socket (context, ZMQ_REQ);
+	// Prepare our context and socket
+	zmq::context_t context (1);
+	zmq::socket_t socket (context, ZMQ_REQ);
 
-    std::cout << "Connecting to Echo server..." << std::endl;
-    socket.connect("tcp://localhost:5555");
+	std::cout << "Connecting to Echo server..." << std::endl;
+	socket.connect("tcp://localhost:5555");
 
-    // Keep track of the number of requests
+	// Keep track of the number of requests
 	int Count = 0;
 
-    while (true) {
-
+	while (true)
+	{
 		std::string message;
 		std::cout << "Your input: ";
 		getline(std::cin, message);
@@ -33,19 +33,18 @@ int main ()
 			std::cout << "Warning: Message truncated because it was larger than the buffer size." << std::endl;
 		}
 
-        zmq::message_t request(message.size() + 1);
-        memcpy (request.data(), message.c_str(), message.size() + 1);
+		zmq::message_t request(message.size() + 1);
+		memcpy (request.data(), message.c_str(), message.size() + 1);
 
-        socket.send(request);
+		socket.send(request);
 
-        // Get the reply.
-        zmq::message_t reply;
-        socket.recv(&reply);
+		// Get the reply.
+		zmq::message_t reply;
+		socket.recv(&reply);
 
 		char rep[BUFFER_SIZE];
 		memcpy(rep, reply.data(), BUFFER_SIZE);
 
-        std::cout << "Response " << ++Count << ": " << rep << "\t(len:" << strlen(rep) << ")" << std::endl;
-    }
-    return 0;
+		std::cout << "Response " << ++Count << ": " << rep << "\t(len:" << strlen(rep) << ")" << std::endl;
+	}
 }
