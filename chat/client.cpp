@@ -10,8 +10,8 @@
 using namespace std;
 using namespace zmq;
 
-static string s_recv (socket_t& socket) {
-
+string s_recv(socket_t& socket)
+{
     message_t message;
     socket.recv(&message);
 
@@ -20,7 +20,7 @@ static string s_recv (socket_t& socket) {
 
 // Multiple sync REQ talking to async ROUTER
 
-int main ()
+int main()
 {
 	// Identity must be unique between clients
 	string identity;
@@ -28,12 +28,12 @@ int main ()
 	getline(cin, identity);
 
 	// Prepare our context and socket
-	context_t context (1);
-	socket_t socket (context, ZMQ_REQ);	// ZMQ_REQ is sync request
+	context_t context(1);
+	socket_t socket(context, ZMQ_REQ);	// ZMQ_REQ is sync request
 	socket.setsockopt(ZMQ_IDENTITY, identity.c_str(), identity.size());
 
 	cout << "Connecting to server..." << endl;
-	socket.connect ("tcp://localhost:5555");
+	socket.connect("tcp://localhost:5555");
 
 	while (true)
 	{
@@ -42,7 +42,7 @@ int main ()
 		getline(cin, message);
 
 		message_t request(message.size() + 1);
-		memcpy (request.data(), message.c_str(), message.size() + 1);
+		memcpy(request.data(), message.c_str(), message.size() + 1);
 
 		socket.send(request);
 

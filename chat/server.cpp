@@ -14,7 +14,7 @@ using namespace zmq;
 
 const size_t MAX_STACK_SIZE = 20;
 
-static string s_recv (socket_t& socket)
+string s_recv(socket_t& socket)
 {
 	message_t message;
 	socket.recv(&message);
@@ -22,36 +22,34 @@ static string s_recv (socket_t& socket)
 	return string(static_cast<char*>(message.data()), message.size());
 }
 
-static bool s_send (socket_t& socket, const string& string)
+bool s_send(socket_t& socket, const string& string)
 {
 	message_t message(string.size());
-	memcpy (message.data(), string.data(), string.size());
+	memcpy(message.data(), string.data(), string.size());
 
-	bool rc = socket.send (message);
-	return (rc);
+	return socket.send(message);
 }
 
-static bool s_sendmore (socket_t& socket, const string& string)
+bool s_sendmore(socket_t& socket, const string& string)
 {
 	message_t message(string.size());
-	memcpy (message.data(), string.data(), string.size());
+	memcpy(message.data(), string.data(), string.size());
 
-	bool rc = socket.send (message, ZMQ_SNDMORE);
-	return (rc);
+	return socket.send(message, ZMQ_SNDMORE);
 }
 
 // Multiple sync REQ talking to async ROUTER
 
-int main ()
+int main()
 {
 	// Prepare our context and socket
 	context_t context(1);
 	socket_t socket(context, ZMQ_ROUTER);	// ZMQ_ROUTER is async reply
-	socket.bind ("tcp://*:5555");
+	socket.bind("tcp://*:5555");
 
 	cout << "Server started." << endl;
 
-	deque<pair<string, string> > messages;
+	deque<pair<string, string>> messages;
 
 	while (true)
 	{
