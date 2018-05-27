@@ -49,7 +49,7 @@ int main()
 
 	cout << "Server started." << endl;
 
-	deque<pair<string, string>> messages;
+	deque<pair<string, string> > messages;
 
 	while (true)
 	{
